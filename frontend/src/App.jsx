@@ -40,14 +40,10 @@ function App() {
               <Route exact path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              {/* <Route path="/about" element={<About />} />
-            <Route path="/forgotpassword" element={<ForgotPassword />} /> */}
               {userLoggedIn ? (
                 <>
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/courseSection/:courseId/:courseTitle" element={<CourseContent />} />
-
-
                 </>
               ) : (
                 <Route path="/login" element={<Login />} />
