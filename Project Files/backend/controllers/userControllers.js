@@ -204,6 +204,7 @@ const deleteCourseController = async (req, res) => {
 const enrolledCourseController = async (req, res) => {
   const { courseid } = req.params;
   const { userId } = req.body;
+
   try {
     const course = await courseSchema.findById(courseid);
 
@@ -213,13 +214,13 @@ const enrolledCourseController = async (req, res) => {
         .send({ success: false, message: "Course Not Found!" });
     }
 
-    let course_Length = course.sections.length;
+    // FIXED: count modules correctly
+    const course_Length = course?.sections?.modules?.length || 0;
 
     // Check if the user is already enrolled in the course
     const enrolledCourse = await enrolledCourseSchema.findOne({
       courseId: courseid,
       userId: userId,
-      course_Length: course_Length,
     });
 
     if (!enrolledCourse) {
@@ -227,28 +228,29 @@ const enrolledCourseController = async (req, res) => {
         courseId: courseid,
         userId: userId,
         course_Length: course_Length,
+        progress: [],
       });
 
       const coursePayment = new coursePaymentSchema({
-        userId: req.body.userId,
+        userId: userId,
         courseId: courseid,
-        ...req.body,
+        ...req.body, // card details
       });
 
       await coursePayment.save();
       await enrolledCourseInstance.save();
 
-      // Increment the 'enrolled' count of the course by +1
-      course.enrolled += 1;
+      // Increment course enrolled count
+      course.enrolled = (course.enrolled || 0) + 1;
       await course.save();
 
-      res.status(200).send({
+      return res.status(200).send({
         success: true,
-        message: "Enroll Successfully",
+        message: "Enrolled Successfully",
         course: { id: course._id, Title: course.C_title },
       });
     } else {
-      res.status(200).send({
+      return res.status(200).send({
         success: false,
         message: "You are already enrolled in this Course!",
         course: { id: course._id, Title: course.C_title },
@@ -256,11 +258,12 @@ const enrolledCourseController = async (req, res) => {
     }
   } catch (error) {
     console.error("Error in enrolling course:", error);
-    res
+    return res
       .status(500)
       .send({ success: false, message: "Failed to enroll in the course" });
   }
 };
+
 
 /////sending the course content for learning to student
 const sendCourseContentController = async (req, res) => {

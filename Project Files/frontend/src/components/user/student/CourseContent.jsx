@@ -58,6 +58,7 @@ const CourseContent = () => {
    }, [courseId]);
 
    const playVideo = (videoPath, index) => {
+      console.log("Video URL:", videoPath);
       setCurrentVideo(videoPath);
       setPlayingSectionIndex(index);
    };
@@ -134,9 +135,9 @@ const CourseContent = () => {
                         </Accordion.Item>
                      );
                   })}
-                  {completedModule.length === courseContent.length && (
+                  {/* {completedModule.length === courseContent.length && (
                      <Button className='my-2' onClick={() => setShowModal(true)}>Download Certificate</Button>
-                  )}
+                  )} */}
                </Accordion>
             </div>
             <div className="course-video w-50">

@@ -5,12 +5,17 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index"
+    "start": "nodemon index",
+    "seed:users": "node seed/seedUsers.js",
+    "seed:courses": "node seed/seedCourses.js",
+    "seed:enroll": "node seed/seedEnrollments.js",
+    "seed:pay": "node seed/seedPayments.js",
+    "seed:all": "node seed/seedAll.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
+    "dotenv": "^16.6.1",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.5.2",

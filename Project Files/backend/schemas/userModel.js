@@ -21,12 +21,12 @@ const userModel = mongoose.Schema(
       type: String,
       required: [true, "type is required"],
     },
-    // enrolledCourses: [
-    //   {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "course",
-    //   },
-    // ],
+    enrolledCourses: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "course",
+      },
+    ],
   },
   {
     timestamps: true,
